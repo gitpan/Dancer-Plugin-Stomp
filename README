@@ -1,0 +1,73 @@
+NAME
+    Dancer::Plugin::Stomp - A Dancer plugin for talking to Stomp message
+    brokers.
+
+VERSION
+    version 0.0001
+
+SYNOPSIS
+        use Dancer;
+        use Dancer::Plugin::Stomp;
+
+        post '/messages' => sub {
+            stomp->send({ destination => '/queue/foo', body => request->body });
+        };
+
+        dance;
+
+DESCRIPTION
+    This module aims to make it as easy as possible to interact with a Stomp
+    message broker. It provides one new keyword, stomp, which returns a
+    Net::Stomp object.
+
+CONFIGURATION
+    Configuration requires a hostname at a minimum.
+
+        plugins:
+          Stomp:
+            foo:
+              hostname: foo.com
+
+    The above configuration will allow you to send a message very simply:
+
+        stomp->send({ destination => '/queue/foo', body => 'hello' });
+
+    Multiple Stomp clients can also be configured:
+
+        plugins:
+          Stomp:
+            foo:
+              hostname: foo.com
+            bar:
+              hostname: bar.com
+              port: 61613
+              login: bob
+              passcode: secret
+              auto_connect: 0
+
+    To distinguish between multiple stomp clients, you call stomp with a
+    name:
+
+        stomp('foo')->send( ... );
+        stomp('bar')->send( ... );
+
+    The available configuration options for a given Stomp client are:
+
+    hostname - Required
+    port - Optional, Default: 61613
+    login - Optional
+    passcode - Optional
+    auto_connect - Optional, Default: 1
+
+SEE ALSO
+    Net::Stomp, POE::Component::MessageQueue
+
+AUTHOR
+    Naveed Massjouni <naveedm9@gmail.com>
+
+COPYRIGHT AND LICENSE
+    This software is copyright (c) 2011 by Naveed Massjouni.
+
+    This is free software; you can redistribute it and/or modify it under
+    the same terms as the Perl 5 programming language system itself.
+
