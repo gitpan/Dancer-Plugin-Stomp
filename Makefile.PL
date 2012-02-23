@@ -23,7 +23,7 @@ my %WriteMakefileArgs = (
     "Dancer" => 0,
     "Net::STOMP::Client" => 0
   },
-  "VERSION" => "1.0000",
+  "VERSION" => "1.0001",
   "test" => {
     "TESTS" => ""
   }
