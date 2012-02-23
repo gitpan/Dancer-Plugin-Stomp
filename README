@@ -1,45 +1,45 @@
 NAME
-    Dancer::Plugin::Stomp - A Dancer plugin for talking to Stomp message
+    Dancer::Plugin::Stomp - A Dancer plugin for talking to STOMP message
     brokers.
 
 VERSION
-    version 0.0001
+    version 1.0000
 
 SYNOPSIS
         use Dancer;
         use Dancer::Plugin::Stomp;
 
         post '/messages' => sub {
-            stomp->send({ destination => '/queue/foo', body => request->body });
+            stomp->send(destination => '/queue/foo', body => request->body);
         };
 
         dance;
 
 DESCRIPTION
-    This module aims to make it as easy as possible to interact with a Stomp
+    This module aims to make it as easy as possible to interact with a STOMP
     message broker. It provides one new keyword, stomp, which returns a
-    Net::Stomp object.
+    Net::STOMP::Client object.
 
 CONFIGURATION
-    Configuration requires a hostname at a minimum.
+    Configuration requires a host at a minimum.
 
         plugins:
           Stomp:
-            foo:
-              hostname: foo.com
+            default:
+              host: foo.com
 
     The above configuration will allow you to send a message very simply:
 
-        stomp->send({ destination => '/queue/foo', body => 'hello' });
+        stomp->send(destination => '/queue/foo', body => 'hello');
 
-    Multiple Stomp clients can also be configured:
+    Multiple clients can also be configured:
 
         plugins:
           Stomp:
-            foo:
-              hostname: foo.com
+            default:
+              host: foo.com
             bar:
-              hostname: bar.com
+              host: bar.com
               port: 61613
               login: bob
               passcode: secret
@@ -48,19 +48,19 @@ CONFIGURATION
     To distinguish between multiple stomp clients, you call stomp with a
     name:
 
-        stomp('foo')->send( ... );
+        stomp('default')->send( ... );
         stomp('bar')->send( ... );
 
-    The available configuration options for a given Stomp client are:
+    The available configuration options for a client are:
 
-    hostname - Required
+    host - Required
     port - Optional, Default: 61613
     login - Optional
     passcode - Optional
     auto_connect - Optional, Default: 1
 
 SEE ALSO
-    Net::Stomp, POE::Component::MessageQueue
+    Net::STOMP::Client, POE::Component::MessageQueue
 
 AUTHOR
     Naveed Massjouni <naveedm9@gmail.com>
