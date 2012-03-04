@@ -3,34 +3,66 @@ NAME
     brokers.
 
 VERSION
-    version 1.0001
+    version 1.0100
 
 SYNOPSIS
         use Dancer;
         use Dancer::Plugin::Stomp;
 
         post '/messages' => sub {
-            stomp->send(destination => '/queue/foo', body => request->body);
+            stomp_send { destination => '/queue/foo', body => request->body };
         };
 
         dance;
 
 DESCRIPTION
-    This module aims to make it as easy as possible to interact with a STOMP
-    message broker. It provides one new keyword, stomp, which returns a
-    Net::STOMP::Client object.
+    The goal of this module is to make it as easy as possible to interact
+    with a STOMP message broker. STOMP stands for Simple (or Streaming) Text
+    Orientated Messaging Protocol. It is a simple and standard protocol for
+    messaging systems. See <http://stomp.github.com> for more details about
+    the protocol.
+
+KEYWORDS
+  stomp_send
+        stomp_send \%data
+        stomp_send name => \%data
+
+    This is a convenience function that handles connection details for you.
+    It sends your message using the default configured client. If you have
+    only one client configured, it is your default one. If you have multiple
+    clients configured, the one named "default" will be used. Doing this
+
+        stomp_send { destination => '/queue/foo', body => 'hello' };
+
+    is the same as:
+
+        stomp->connect(login => $login, passcode => $passcode);
+        stomp->send(destination => '/queue/foo', body => 'hello');
+        stomp->disconnect();
+
+    If you have multiple clients configured, you can distinguish between
+    them by providing the name of the client as the first argument, followed
+    by the data as the second argument:
+
+        stomp_send foo => { destination => '/queue/foo', body => 'hello' };
+
+  stomp
+        my $stomp = stomp
+        my $stomp = stomp $name
+
+    This simply returns a Net::STOMP::Client object. You are responsible for
+    connecting and disconnecting. When no arguments are given, it returns a
+    handle to the default configured client. You may provide a name if you
+    have multiple clients configured.
 
 CONFIGURATION
-    Configuration requires a host at a minimum.
+    Configuration at a minimum requires a name and a host. The following
+    example defines one client named "default".
 
         plugins:
           Stomp:
             default:
               host: foo.com
-
-    The above configuration will allow you to send a message very simply:
-
-        stomp->send(destination => '/queue/foo', body => 'hello');
 
     Multiple clients can also be configured:
 
@@ -43,24 +75,20 @@ CONFIGURATION
               port: 61613
               login: bob
               passcode: secret
-              auto_connect: 0
-
-    To distinguish between multiple stomp clients, you call stomp with a
-    name:
-
-        stomp('default')->send( ... );
-        stomp('bar')->send( ... );
 
     The available configuration options for a client are:
 
     host - Required
+        This is the location of the STOMP server. It can be an ip address or
+        a hostname.
+
     port - Optional, Default: 61613
     login - Optional
     passcode - Optional
-    auto_connect - Optional, Default: 1
 
 SEE ALSO
-    Net::STOMP::Client, POE::Component::MessageQueue
+    Net::STOMP::Client, POE::Component::MessageQueue,
+    <http://stomp.github.com>
 
 AUTHOR
     Naveed Massjouni <naveedm9@gmail.com>
