@@ -5,9 +5,8 @@ use Dancer::Plugin;
 use Memoize;
 use Net::STOMP::Client;
 
-our $VERSION = '1.0100'; # VERSION
+our $VERSION = '1.0101'; # VERSION
 
-memoize 'get_stomp_client';
 memoize '_params';
 
 sub get_stomp_client {
@@ -70,7 +69,7 @@ Dancer::Plugin::Stomp - A Dancer plugin for talking to STOMP message brokers.
 
 =head1 VERSION
 
-version 1.0100
+version 1.0101
 
 =head1 SYNOPSIS
 
@@ -108,9 +107,10 @@ Doing this
 
 is the same as:
 
-    stomp->connect(login => $login, passcode => $passcode);
-    stomp->send(destination => '/queue/foo', body => 'hello');
-    stomp->disconnect();
+    my $stomp = stomp();
+    $stomp->connect(login => $login, passcode => $passcode);
+    $stomp->send(destination => '/queue/foo', body => 'hello');
+    $stomp->disconnect();
 
 If you have multiple clients configured, you can distinguish between them
 by providing the name of the client as the first argument, followed by

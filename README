@@ -3,7 +3,7 @@ NAME
     brokers.
 
 VERSION
-    version 1.0100
+    version 1.0101
 
 SYNOPSIS
         use Dancer;
@@ -36,9 +36,10 @@ KEYWORDS
 
     is the same as:
 
-        stomp->connect(login => $login, passcode => $passcode);
-        stomp->send(destination => '/queue/foo', body => 'hello');
-        stomp->disconnect();
+        my $stomp = stomp();
+        $stomp->connect(login => $login, passcode => $passcode);
+        $stomp->send(destination => '/queue/foo', body => 'hello');
+        $stomp->disconnect();
 
     If you have multiple clients configured, you can distinguish between
     them by providing the name of the client as the first argument, followed
