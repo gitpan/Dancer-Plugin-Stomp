@@ -3,7 +3,7 @@ NAME
     brokers.
 
 VERSION
-    version 1.0101
+    version 1.0200
 
 SYNOPSIS
         use Dancer;
@@ -51,7 +51,7 @@ KEYWORDS
         my $stomp = stomp
         my $stomp = stomp $name
 
-    This simply returns a Net::STOMP::Client object. You are responsible for
+    This simply returns a Net::Stomp object. You are responsible for
     connecting and disconnecting. When no arguments are given, it returns a
     handle to the default configured client. You may provide a name if you
     have multiple clients configured.
@@ -88,8 +88,7 @@ CONFIGURATION
     passcode - Optional
 
 SEE ALSO
-    Net::STOMP::Client, POE::Component::MessageQueue,
-    <http://stomp.github.com>
+    Net::Stomp, POE::Component::MessageQueue, <http://stomp.github.com>
 
 AUTHOR
     Naveed Massjouni <naveedm9@gmail.com>

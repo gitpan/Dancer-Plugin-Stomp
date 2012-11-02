@@ -3,9 +3,9 @@ use strict;
 use warnings;
 use Dancer::Plugin;
 use Memoize;
-use Net::STOMP::Client;
+use Net::Stomp;
 
-our $VERSION = '1.0101'; # VERSION
+our $VERSION = '1.0200'; # VERSION
 
 memoize '_params';
 
@@ -15,7 +15,7 @@ sub get_stomp_client {
     my $host = $params{host} || $params{hostname}
         or die "The Stomp server host is missing";
     my $port = $params{port} || 61613;
-    my $stomp = Net::STOMP::Client->new(host => $host, port => $port);
+    my $stomp = Net::Stomp->new({ hostname => $host, port => $port });
     return $stomp;
 };
 
@@ -33,8 +33,8 @@ sub stomp_send {
     my %conn_info;
     $conn_info{login} = $params{login} if exists $params{login};
     $conn_info{passcode} = $params{passcode} if exists $params{passcode};
-    $stomp->connect(%conn_info);
-    $stomp->send(%$data);
+    $stomp->connect(\%conn_info);
+    $stomp->send($data);
     $stomp->disconnect();
 }
 
@@ -61,6 +61,7 @@ register_plugin;
 1;
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -69,7 +70,7 @@ Dancer::Plugin::Stomp - A Dancer plugin for talking to STOMP message brokers.
 
 =head1 VERSION
 
-version 1.0101
+version 1.0200
 
 =head1 SYNOPSIS
 
@@ -123,7 +124,7 @@ the data as the second argument:
     my $stomp = stomp
     my $stomp = stomp $name
 
-This simply returns a L<Net::STOMP::Client> object.
+This simply returns a L<Net::Stomp> object.
 You are responsible for connecting and disconnecting.
 When no arguments are given, it returns a handle to the default configured
 client.
@@ -170,7 +171,7 @@ It can be an ip address or a hostname.
 
 =head1 SEE ALSO
 
-L<Net::STOMP::Client>, L<POE::Component::MessageQueue>,
+L<Net::Stomp>, L<POE::Component::MessageQueue>,
 L<http://stomp.github.com> 
 
 =head1 AUTHOR
@@ -185,4 +186,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

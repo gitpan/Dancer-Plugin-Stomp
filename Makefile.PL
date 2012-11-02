@@ -21,9 +21,9 @@ my %WriteMakefileArgs = (
   "NAME" => "Dancer::Plugin::Stomp",
   "PREREQ_PM" => {
     "Dancer" => 0,
-    "Net::STOMP::Client" => 0
+    "Net::Stomp" => 0
   },
-  "VERSION" => "1.0101",
+  "VERSION" => "1.0200",
   "test" => {
     "TESTS" => ""
   }
