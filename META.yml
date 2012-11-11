@@ -1,5 +1,5 @@
 ---
-abstract: 'A Dancer plugin for talking to STOMP message brokers.'
+abstract: 'A Dancer plugin for messaging using STOMP based message queues.'
 author:
   - 'Naveed Massjouni <naveedm9@gmail.com>'
 build_requires: {}
@@ -18,4 +18,4 @@ requires:
 resources:
   bugtracker: http://github.com/ironcamel/Dancer-Plugin-Stomp/issues
   repository: git://github.com/ironcamel/Dancer-Plugin-Stomp.git
-version: 1.0200
+version: 1.0300

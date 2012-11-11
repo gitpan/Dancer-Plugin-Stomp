@@ -9,7 +9,7 @@ use ExtUtils::MakeMaker 6.30;
 
 
 my %WriteMakefileArgs = (
-  "ABSTRACT" => "A Dancer plugin for talking to STOMP message brokers.",
+  "ABSTRACT" => "A Dancer plugin for messaging using STOMP based message queues.",
   "AUTHOR" => "Naveed Massjouni <naveedm9\@gmail.com>",
   "BUILD_REQUIRES" => {},
   "CONFIGURE_REQUIRES" => {
@@ -23,7 +23,7 @@ my %WriteMakefileArgs = (
     "Dancer" => 0,
     "Net::Stomp" => 0
   },
-  "VERSION" => "1.0200",
+  "VERSION" => "1.0300",
   "test" => {
     "TESTS" => ""
   }

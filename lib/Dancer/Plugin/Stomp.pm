@@ -5,17 +5,20 @@ use Dancer::Plugin;
 use Memoize;
 use Net::Stomp;
 
-our $VERSION = '1.0200'; # VERSION
+our $VERSION = '1.0300'; # VERSION
 
 memoize '_params';
 
 sub get_stomp_client {
     my ($name) = @_;
     my %params = _params($name);
-    my $host = $params{host} || $params{hostname}
-        or die "The Stomp server host is missing";
+    my $host = $params{host} || $params{hostname};
     my $port = $params{port} || 61613;
-    my $stomp = Net::Stomp->new({ hostname => $host, port => $port });
+    my $hosts = $params{hosts};
+    die "Stomp server host or hosts is required" unless $host or $hosts;
+    my $stomp = $hosts
+        ? Net::Stomp->new({ hosts => $hosts })
+        : Net::Stomp->new({ host  => $host, port => $port });
     return $stomp;
 };
 
@@ -55,7 +58,7 @@ register stomp => \&get_stomp_client;
 register stomp_send => \&stomp_send;
 register_plugin;
 
-# ABSTRACT: A Dancer plugin for talking to STOMP message brokers.
+# ABSTRACT: A Dancer plugin for messaging using STOMP based message queues.
 
 
 1;
@@ -66,11 +69,11 @@ __END__
 
 =head1 NAME
 
-Dancer::Plugin::Stomp - A Dancer plugin for talking to STOMP message brokers.
+Dancer::Plugin::Stomp - A Dancer plugin for messaging using STOMP based message queues.
 
 =head1 VERSION
 
-version 1.0200
+version 1.0300
 
 =head1 SYNOPSIS
 
@@ -138,41 +141,66 @@ The following example defines one client named C<default>.
     plugins:
       Stomp:
         default:
-          host: foo.com
+          hostname: foo.com
+          port: 61613
 
 Multiple clients can also be configured:
 
     plugins:
       Stomp:
         default:
-          host: foo.com
+          hostname: foo.com
+          port: 61613
         bar:
-          host: bar.com
+          hostname: bar.com
           port: 61613
           login: bob
           passcode: secret
+
+Failover hosts are supported:
+
+    plugins:
+      Stomp:
+        default:
+          hosts:
+            -
+              hostname: foo.com
+              port: 61613
+            -
+              hostname: bar.com
+              port: 61613
 
 The available configuration options for a client are:
 
 =over
 
-=item host - Required
+=item hostname
 
 This is the location of the STOMP server.
 It can be an ip address or a hostname.
+Either hostname or hosts is required.
 
-=item port - Optional, Default: 61613
+=item hosts
 
-=item login - Optional
+This is to support failover hosts as documented in L<Net::Stomp>.
+In Perl terms, it should be an arrayref of hashrefs,
+each of which contains at least a hostname and a port.
+Either hostname or hosts is required.
 
-=item passcode - Optional
+=item port
+
+=item login
+
+=item passcode
 
 =back
 
 =head1 SEE ALSO
-
-L<Net::Stomp>, L<POE::Component::MessageQueue>,
-L<http://stomp.github.com> 
+=over
+=item L<Net::Stomp>
+=item L<POE::Component::MessageQueue>
+=item L<http://stomp.github.com>
+=back
 
 =head1 AUTHOR
 

@@ -1,9 +1,9 @@
 NAME
-    Dancer::Plugin::Stomp - A Dancer plugin for talking to STOMP message
-    brokers.
+    Dancer::Plugin::Stomp - A Dancer plugin for messaging using STOMP based
+    message queues.
 
 VERSION
-    version 1.0200
+    version 1.0300
 
 SYNOPSIS
         use Dancer;
@@ -63,33 +63,57 @@ CONFIGURATION
         plugins:
           Stomp:
             default:
-              host: foo.com
+              hostname: foo.com
+              port: 61613
 
     Multiple clients can also be configured:
 
         plugins:
           Stomp:
             default:
-              host: foo.com
+              hostname: foo.com
+              port: 61613
             bar:
-              host: bar.com
+              hostname: bar.com
               port: 61613
               login: bob
               passcode: secret
 
+    Failover hosts are supported:
+
+        plugins:
+          Stomp:
+            default:
+              hosts:
+                -
+                  hostname: foo.com
+                  port: 61613
+                -
+                  hostname: bar.com
+                  port: 61613
+
     The available configuration options for a client are:
 
-    host - Required
+    hostname
         This is the location of the STOMP server. It can be an ip address or
-        a hostname.
+        a hostname. Either hostname or hosts is required.
 
-    port - Optional, Default: 61613
-    login - Optional
-    passcode - Optional
+    hosts
+        This is to support failover hosts as documented in Net::Stomp. In
+        Perl terms, it should be an arrayref of hashrefs, each of which
+        contains at least a hostname and a port. Either hostname or hosts is
+        required.
+
+    port
+    login
+    passcode
 
 SEE ALSO
-    Net::Stomp, POE::Component::MessageQueue, <http://stomp.github.com>
-
+=over
+=item Net::Stomp
+=item POE::Component::MessageQueue
+=item <http://stomp.github.com>
+=back
 AUTHOR
     Naveed Massjouni <naveedm9@gmail.com>
 
