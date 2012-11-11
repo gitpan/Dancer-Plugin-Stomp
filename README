@@ -3,7 +3,7 @@ NAME
     message queues.
 
 VERSION
-    version 1.0300
+    version 1.0301
 
 SYNOPSIS
         use Dancer;

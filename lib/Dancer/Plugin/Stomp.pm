@@ -5,7 +5,7 @@ use Dancer::Plugin;
 use Memoize;
 use Net::Stomp;
 
-our $VERSION = '1.0300'; # VERSION
+our $VERSION = '1.0301'; # VERSION
 
 memoize '_params';
 
@@ -18,7 +18,7 @@ sub get_stomp_client {
     die "Stomp server host or hosts is required" unless $host or $hosts;
     my $stomp = $hosts
         ? Net::Stomp->new({ hosts => $hosts })
-        : Net::Stomp->new({ host  => $host, port => $port });
+        : Net::Stomp->new({ hostname => $host, port => $port });
     return $stomp;
 };
 
@@ -73,7 +73,7 @@ Dancer::Plugin::Stomp - A Dancer plugin for messaging using STOMP based message 
 
 =head1 VERSION
 
-version 1.0300
+version 1.0301
 
 =head1 SYNOPSIS
 
