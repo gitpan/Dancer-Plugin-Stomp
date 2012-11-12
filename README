@@ -3,7 +3,7 @@ NAME
     message queues.
 
 VERSION
-    version 1.0301
+    version 1.0302
 
 SYNOPSIS
         use Dancer;
@@ -109,11 +109,10 @@ CONFIGURATION
     passcode
 
 SEE ALSO
-=over
-=item Net::Stomp
-=item POE::Component::MessageQueue
-=item <http://stomp.github.com>
-=back
+    Net::Stomp
+    POE::Component::MessageQueue
+    <http://stomp.github.com>
+
 AUTHOR
     Naveed Massjouni <naveedm9@gmail.com>
 

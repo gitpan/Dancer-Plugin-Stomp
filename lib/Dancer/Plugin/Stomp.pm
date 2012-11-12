@@ -5,7 +5,7 @@ use Dancer::Plugin;
 use Memoize;
 use Net::Stomp;
 
-our $VERSION = '1.0301'; # VERSION
+our $VERSION = '1.0302'; # VERSION
 
 memoize '_params';
 
@@ -73,7 +73,7 @@ Dancer::Plugin::Stomp - A Dancer plugin for messaging using STOMP based message 
 
 =head1 VERSION
 
-version 1.0301
+version 1.0302
 
 =head1 SYNOPSIS
 
@@ -196,10 +196,15 @@ Either hostname or hosts is required.
 =back
 
 =head1 SEE ALSO
+
 =over
+
 =item L<Net::Stomp>
+
 =item L<POE::Component::MessageQueue>
+
 =item L<http://stomp.github.com>
+
 =back
 
 =head1 AUTHOR
